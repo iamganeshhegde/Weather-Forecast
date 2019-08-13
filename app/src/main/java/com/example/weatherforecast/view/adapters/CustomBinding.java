@@ -34,14 +34,11 @@ public class CustomBinding {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-
     }
     @BindingAdapter("setImage")
     public static void setImageRes(ImageView iv,String url){
 
         Picasso.get().load("https:"+url).error(R.drawable.ic_error_black_24dp).into(iv);
-
         Log.i("Image Url","https:"+url);
     }
 

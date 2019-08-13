@@ -1,5 +1,6 @@
 package com.example.weatherforecast.viewmodel
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.location.Location
 import android.os.Looper
@@ -25,36 +26,21 @@ class WeatherViewModel(application: Application):AndroidViewModel(application) {
     val FASTEST_INTERVAL: Long = 3 * 1000
 
     lateinit var mLocationSettingRequest: LocationSettingsRequest
-
-
     var mSettingsClient: SettingsClient = LocationServices.getSettingsClient(application)
-
 
     init {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(appApplication)
         mSettingsClient = LocationServices.getSettingsClient(appApplication)
-
     }
-
-
 
     //to get the weather forecast details from repo
     fun getForecastDetails(latitude: Double, longitude: Double):LiveData<WeatherForecast>?{
-
         return repo.getWeatherForecastData(latitude,longitude)
     }
 
-
-
     //get location
     fun getLocationUpdates():MutableLiveData<Location>{
-
-
         //createLocationRequest
-
-
-//        if(mLocationRequest == null){
-
             mLocationRequest = LocationRequest()
 
             mLocationRequest?.apply {
@@ -76,23 +62,14 @@ class WeatherViewModel(application: Application):AndroidViewModel(application) {
 
             task.addOnFailureListener {
                 if(it is ResolvableApiException){
-//                it.startResolutionForResult(appApplication,)
                 }
             }
-
-        /*}else{
-            startLocationUpdates()
-        }*/
-
-
         return location
-
     }
 
+    @SuppressLint("MissingPermission")
     fun startLocationUpdates() {
-
         mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallbacks, Looper.myLooper())
-
     }
 
 
@@ -103,16 +80,11 @@ class WeatherViewModel(application: Application):AndroidViewModel(application) {
             if(locationResult != null){
                 location.value = locationResult.lastLocation
                 stopLocationUpdates()
-
             }
-
-
         }
     }
 
-
     fun stopLocationUpdates() {
-
         mFusedLocationClient.removeLocationUpdates(mLocationCallbacks)
     }
 
